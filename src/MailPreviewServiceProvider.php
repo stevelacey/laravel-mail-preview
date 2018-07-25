@@ -28,9 +28,9 @@ class MailPreviewServiceProvider extends ServiceProvider
                 $router->get('/themsaid/mail-preview')->uses(MailPreviewController::class.'@preview');
             });
 
-            $this->app[Kernel::class]->pushMiddleware(
-                MailPreviewMiddleware::class
-            );
+            $this->app[Kernel::class]->pushMiddleware(MailPreviewMiddleware::class);
+
+            $this->loadViewsFrom(__DIR__ . '/resources/views', 'mailpreview');
         }
     }
 
