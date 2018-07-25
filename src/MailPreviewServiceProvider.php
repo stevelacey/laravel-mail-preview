@@ -30,6 +30,8 @@ class MailPreviewServiceProvider extends ServiceProvider
 
             $this->app[Kernel::class]->pushMiddleware(MailPreviewMiddleware::class);
 
+            $this->publishes([__DIR__ . '/resources/views/notification.blade.php' => resource_path('views/vendor/mailpreview/notification.blade.php')], 'views');
+
             $this->loadViewsFrom(__DIR__ . '/resources/views', 'mailpreview');
         }
     }
