@@ -14,9 +14,7 @@ class MailPreviewServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->publishes([
-            __DIR__.'/config/mailpreview.php' => config_path('mailpreview.php'),
-        ]);
+        $this->publishes([__DIR__ . '/config/mailpreview.php' => config_path('mailpreview.php')], 'config');
 
         if ($this->app['config']['mail.driver'] != 'preview') {
             return;
