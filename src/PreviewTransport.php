@@ -52,22 +52,17 @@ class PreviewTransport extends Transport
     public function send(Swift_Mime_SimpleMessage $message, &$failedRecipients = null)
     {
         $this->beforeSendPerformed($message);
-
         $this->createEmailPreviewDirectory();
-
         $this->cleanOldPreviews();
 
         Session::put('mail_preview_path', basename($previewPath = $this->getPreviewFilePath($message)));
 
-        $this->files->put(
-            $previewPath.'.html',
-            $this->getHTMLPreviewContent($message)
-        );
+        $this->files->put($previewPath . '.eml', $this->getEMLPreviewContent($message));
+        $this->files->put($previewPath . '.html', $this->getHTMLPreviewContent($message));
 
-        $this->files->put(
-            $previewPath.'.eml',
-            $this->getEMLPreviewContent($message)
-        );
+        if ($message->getChildren() && $message->getChildren()[0]->getContentType() == 'text/plain') {
+            $this->files->put($previewPath . '.txt', $this->getTextPreviewContent($message));
+        }
     }
 
     /**
@@ -87,6 +82,18 @@ class PreviewTransport extends Transport
     }
 
     /**
+     * Get the EML content for the preview file.
+     *
+     * @param  \Swift_Mime_SimpleMessage $message
+     *
+     * @return string
+     */
+    protected function getEMLPreviewContent(Swift_Mime_SimpleMessage $message)
+    {
+        return $message->toString();
+    }
+
+    /**
      * Get the HTML content for the preview file.
      *
      * @param  \Swift_Mime_SimpleMessage $message
@@ -97,19 +104,19 @@ class PreviewTransport extends Transport
     {
         $messageInfo = $this->getMessageInfo($message);
 
-        return $messageInfo.$message->getBody();
+        return $messageInfo . $message->getBody();
     }
 
     /**
-     * Get the EML content for the preview file.
+     * Get the text content for the preview file.
      *
      * @param  \Swift_Mime_SimpleMessage $message
      *
      * @return string
      */
-    protected function getEMLPreviewContent(Swift_Mime_SimpleMessage $message)
+    protected function getTextPreviewContent(Swift_Mime_SimpleMessage $message)
     {
-        return $message->toString();
+        return $message->getChildren()[0]->getBody();
     }
 
     /**
