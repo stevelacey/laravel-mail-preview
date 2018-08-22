@@ -10,64 +10,56 @@ class MailPreviewController extends BaseController
     public function index()
     {
         $inbox = $this->inbox();
-
-        $email = $this->process(config('mailpreview.path') . '/' . $inbox->first()->path . '.eml');
+        $email = $inbox->first();
 
         return view('mailpreview::show', ['inbox' => $inbox, 'email' => $email]);
     }
 
     public function show($path)
     {
-        $inbox = $this->inbox()->map(function ($entry) use ($path) {
-            $entry->active = $entry->path == $path;
+        $inbox = $this->inbox();
+        $email = $inbox->firstWhere('path', $path);
 
-            return $entry;
-        });
-
-        $email = $this->process(config('mailpreview.path') . '/' . $path . '.eml');
+        if (!$email) {
+            return redirect('mailpreview');
+        }
 
         return view('mailpreview::show', ['inbox' => $inbox, 'email' => $email]);
     }
 
     public function download($path)
     {
-        $content = file_get_contents(config('mailpreview.path') . '/' . $path . '.eml');
-
-        return response($content, 200, ['Content-Type' => 'text/plain']);
+        return $this->render(config('mailpreview.path') . "/{$path}.eml", 'text/plain');
     }
 
     public function html($path)
     {
-        $content = file_get_contents(config('mailpreview.path') . '/' . $path . '.html');
-
-        return $content;
+        return $this->render(config('mailpreview.path') . "/{$path}.html", 'text/html');
     }
 
     public function source($path)
     {
-        $content = file_get_contents(config('mailpreview.path') . '/' . $path . '.html');
-
-        return response($content, 200, ['Content-Type' => 'text/plain']);
+        return $this->render(config('mailpreview.path') . "/{$path}.html", 'text/plain');
     }
 
     public function text($path)
     {
-        $content = file_get_contents(config('mailpreview.path') . '/' . $path . '.txt');
-
-        return response($content, 200, ['Content-Type' => 'text/plain']);
+        return $this->render(config('mailpreview.path') . "/{$path}.txt", 'text/plain');
     }
 
-    public function inbox()
+    protected function inbox()
     {
         return collect(glob(config('mailpreview.path') . '/*.eml'))
             ->sort()
             ->reverse()
-            ->map([$this, 'process']);
+            ->map(function ($realpath) {
+                return $this->process($realpath);
+            });
     }
 
-    public function process($path)
+    protected function process($realpath)
     {
-        $eml = file_get_contents($path);
+        $eml = file_get_contents($realpath);
 
         preg_match('#Date: (.*)#', $eml, $matches);
         $date = $matches[1];
@@ -87,8 +79,17 @@ class MailPreviewController extends BaseController
             'to' => $to,
             'date' => $date,
             'datetime' => Carbon::parse($date),
-            'path' => substr($path, strlen(config('mailpreview.path')) + 1, -4),
+            'path' => substr($realpath, strlen(config('mailpreview.path')) + 1, -4),
             'active' => false,
         ];
+    }
+
+    protected function render($realpath, $type)
+    {
+        if (file_exists($realpath)) {
+            return response(file_get_contents($realpath), 200, ['Content-Type' => $type]);
+        }
+
+        return response('Not found', 404, ['Content-Type' => $type]);
     }
 }

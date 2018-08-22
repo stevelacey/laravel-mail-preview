@@ -19,8 +19,8 @@
                         @foreach($inbox as $entry)
                             <a href="{{ route('mailpreview.show', $entry->path) }}" class="
                                 nav-link
-                                {{ $entry->active ? 'active bg-success' : '' }}
-                                {{ $entry->active ? 'text-white' : 'text-secondary' }}
+                                {{ $email == $entry ? 'active bg-success' : '' }}
+                                {{ $email == $entry ? 'text-white' : 'text-secondary' }}
                             ">
                                 <div class="subject text-truncate">{{ $entry->subject }}</div>
                                 <div class="row">
