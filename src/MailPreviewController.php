@@ -21,7 +21,7 @@ class MailPreviewController extends BaseController
         $email = $inbox->firstWhere('path', $path);
 
         if (!$email) {
-            return redirect('mailpreview');
+            return redirect(route('mailpreview'));
         }
 
         return view('mailpreview::show', ['inbox' => $inbox, 'email' => $email]);
