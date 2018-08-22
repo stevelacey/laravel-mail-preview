@@ -1,13 +1,17 @@
 {
-    "name": "themsaid/laravel-mail-preview",
-    "description": "Adds a 'preview' mail driver for testing emails in laravel.",
+    "name": "stevelacey/laravel-mail-preview",
+    "description": "Adds a 'preview' mail driver for testing emails in Laravel.",
     "keywords": ["laravel", "mail"],
-    "homepage": "https://github.com/themsaid/laravel-preview-mail-driver",
+    "homepage": "https://github.com/stevelacey/laravel-preview-mail",
     "license": "MIT",
     "authors": [
         {
             "name": "Mohamed Said",
             "email": "theMohamedSaid@gmail.com"
+        },
+        {
+            "name": "Steve Lacey",
+            "email": "steve@stevelacey.net"
         }
     ],
     "require": {
@@ -15,7 +19,6 @@
         "illuminate/support": "~5.5",
         "illuminate/mail": "~5.5",
         "illuminate/filesystem": "~5.5"
-
     },
     "require-dev": {
         "mockery/mockery": "^1.1",
