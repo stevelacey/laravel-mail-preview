@@ -11,6 +11,8 @@ class MailPreviewController extends BaseController
     {
         $inbox = $this->inbox();
 
+        $email = $this->process(config('mailpreview.path') . '/' . $inbox->first()->path . '.eml');
+
         return view('mailpreview::show', ['inbox' => $inbox, 'email' => $email]);
     }
 
