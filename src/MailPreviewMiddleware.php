@@ -47,7 +47,7 @@ class MailPreviewMiddleware
 
         $notification = view('mailpreview::notification', [
             'timeout' => intval(config('mailpreview.popup_timeout', 8000)),
-            'url' => url("/themsaid/mail-preview?path={$previewPath}"),
+            'url' => route('mailpreview.show', $previewPath),
         ]);
 
         $bodyPosition = strripos($content, '</body>');
