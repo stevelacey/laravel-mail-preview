@@ -7,6 +7,11 @@ use Illuminate\Routing\Controller as BaseController;
 
 class MailPreviewController extends BaseController
 {
+    public function __construct()
+    {
+        $this->middleware(Authenticate::class);
+    }
+
     public function index()
     {
         $inbox = $this->inbox();
