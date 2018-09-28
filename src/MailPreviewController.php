@@ -15,7 +15,13 @@ class MailPreviewController extends BaseController
     public function index()
     {
         $inbox = $this->inbox();
-        $email = $inbox->first();
+        $email = $inbox->first() ?: (object) [
+            'subject' => 'No messages found',
+            'from' => '',
+            'to' => '',
+            'date' => '',
+            'path' => '404',
+        ];
 
         return view('mailpreview::show', ['inbox' => $inbox, 'email' => $email]);
     }
