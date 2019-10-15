@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Session;
 use Swift_Mime_SimpleMessage;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Mail\Transport\Transport;
+use Illuminate\Support\Str;
 
 class PreviewTransport extends Transport
 {
@@ -78,7 +79,7 @@ class PreviewTransport extends Transport
 
         $subject = $message->getSubject();
 
-        return $this->previewPath.'/'.str_slug($message->getDate()->getTimestamp().'_'.$to.'_'.$subject, '_');
+        return $this->previewPath.'/'.Str::slug($message->getDate()->getTimestamp().'_'.$to.'_'.$subject, '_');
     }
 
     /**
