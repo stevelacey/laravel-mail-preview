@@ -1,6 +1,6 @@
 <?php
 
-namespace Themsaid\MailPreview;
+namespace Steve\LaravelMailPreview;
 
 use Illuminate\Support\Facades\Session;
 use Swift_Mime_SimpleMessage;
@@ -103,9 +103,7 @@ class PreviewTransport extends Transport
      */
     protected function getHTMLPreviewContent(Swift_Mime_SimpleMessage $message)
     {
-        $messageInfo = $this->getMessageInfo($message);
-
-        return $messageInfo . $message->getBody();
+        return $message->getBody();
     }
 
     /**
@@ -118,26 +116,6 @@ class PreviewTransport extends Transport
     protected function getTextPreviewContent(Swift_Mime_SimpleMessage $message)
     {
         return $message->getChildren()[0]->getBody();
-    }
-
-    /**
-     * Generate a human readable HTML comment with message info.
-     *
-     * @param \Swift_Mime_SimpleMessage $message
-     *
-     * @return string
-     */
-    protected function getMessageInfo(Swift_Mime_SimpleMessage $message)
-    {
-        return sprintf(
-            "<!--\nFrom:%s, \nto:%s, \nreply-to:%s, \ncc:%s, \nbcc:%s, \nsubject:%s\n-->\n",
-            json_encode($message->getFrom()),
-            json_encode($message->getTo()),
-            json_encode($message->getReplyTo()),
-            json_encode($message->getCc()),
-            json_encode($message->getBcc()),
-            $message->getSubject()
-        );
     }
 
     /**

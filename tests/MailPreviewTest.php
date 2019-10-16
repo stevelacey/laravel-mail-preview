@@ -1,7 +1,8 @@
 <?php
 
-use Mockery as m;
-use Themsaid\MailPreview\PreviewTransport;
+namespace Steve\LaravelMailPreview\Tests;
+
+use Steve\LaravelMailPreview\PreviewTransport;
 
 class MailPreviewTest extends TestCase
 {
@@ -10,7 +11,7 @@ class MailPreviewTest extends TestCase
         $message = new Swift_Message('Foo subject', '<html>Body</html>');
         $message->setFrom('myself@example.com');
         $message->setTo('me@example.com');
-        $files = m::mock('Illuminate\Filesystem\Filesystem');
+        $files = Mockery::mock('Illuminate\Filesystem\Filesystem');
         $transport = new PreviewTransport(
             $files,
             'framework/emails'
@@ -31,7 +32,7 @@ class MailPreviewTest extends TestCase
         $message = new Swift_Message('Foo subject', '<html>Body</html>');
         $message->setFrom('myself@example.com');
         $message->setTo('me@example.com');
-        $files = m::mock('Illuminate\Filesystem\Filesystem');
+        $files = Mockery::mock('Illuminate\Filesystem\Filesystem');
         $transport = new PreviewTransport(
             $files,
             'framework/emails',
@@ -51,7 +52,7 @@ class MailPreviewTest extends TestCase
         $message = new Swift_Message('Foo subject', '<html>Body</html>', 'text/html');
         $message->setFrom('myself@example.com', 'Jack Black');
         $message->setTo('me@example.com');
-        $files = m::mock('Illuminate\Filesystem\Filesystem');
+        $files = Mockery::mock('Illuminate\Filesystem\Filesystem');
         $transport = new PreviewTransport(
             $files,
             'framework/emails'
@@ -62,7 +63,7 @@ class MailPreviewTest extends TestCase
 
         $files->shouldReceive('put')->with(
             'framework/emails/'.$message->getDate()->getTimestamp().'_me_at_example_com_foo_subject.html',
-            m::any()
+            Mockery::any()
         );
 
         $files->shouldReceive('put')->with(

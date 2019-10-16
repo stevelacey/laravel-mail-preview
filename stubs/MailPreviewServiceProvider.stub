@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Support\Facades\Gate;
+use Steve\LaravelMailPreview\IncomingEntry;
+use Steve\LaravelMailPreview\MailPreview;
+use Steve\LaravelMailPreview\MailPreviewApplicationServiceProvider;
+
+class MailPreviewServiceProvider extends MailPreviewApplicationServiceProvider
+{
+    /**
+     * Register the MailPreview gate.
+     *
+     * This gate determines who can access MailPreview in non-local environments.
+     *
+     * @return void
+     */
+    protected function gate()
+    {
+        Gate::define('viewMail', function ($user) {
+            return in_array($user->email, [
+                //
+            ]);
+        });
+    }
+}

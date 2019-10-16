@@ -1,22 +1,20 @@
 <?php
 
-namespace Themsaid\MailPreview;
+namespace Steve\LaravelMailPreview;
 
-use Illuminate\Foundation\Http\Kernel;
-use Illuminate\Mail\MailServiceProvider;
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Mail\MailServiceProvider as BaseMailServiceProvider;
 use Swift_Mailer;
 
-class MailProvider extends MailServiceProvider
+class MailServiceProvider extends BaseMailServiceProvider
 {
     /**
      * Register the Swift Mailer instance.
      *
      * @return void
      */
-    function registerSwiftMailer()
+    public function registerSwiftMailer()
     {
-        if ($this->app['config']['mail.driver'] == 'preview' || $this->app['config']['mail.preview'] == true) {
+        if (config('mail.driver') == 'preview') {
             $this->registerPreviewSwiftMailer();
         } else {
             parent::registerSwiftMailer();
@@ -34,8 +32,8 @@ class MailProvider extends MailServiceProvider
             return new Swift_Mailer(
                 new PreviewTransport(
                     $app->make('Illuminate\Filesystem\Filesystem'),
-                    $app['config']['mailpreview.path'],
-                    $app['config']['mailpreview.maximum_lifetime']
+                    config('mailpreview.path'),
+                    config('mailpreview.maximum_lifetime')
                 )
             );
         });

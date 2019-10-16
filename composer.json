@@ -1,7 +1,7 @@
 {
     "name": "stevelacey/laravel-mail-preview",
     "description": "Adds a 'preview' mail driver for testing emails in Laravel.",
-    "keywords": ["laravel", "mail"],
+    "keywords": ["laravel", "mail", "mailcatch", "mailcatcher", "mailgrab", "mailtrap"],
     "homepage": "https://github.com/stevelacey/laravel-preview-mail",
     "license": "MIT",
     "authors": [
@@ -11,33 +11,38 @@
         },
         {
             "name": "Steve Lacey",
-            "email": "steve@stevelacey.net"
+            "email": "steve@steve.ly"
         }
     ],
     "require": {
-        "php": ">=5.5.9",
-        "illuminate/support": ">=5.5",
-        "illuminate/mail": ">=5.5",
-        "illuminate/filesystem": ">=5.5"
+        "php": "^7.2",
+        "illuminate/support": "^5.8||^6.0",
+        "illuminate/mail": "^5.8||^6.0",
+        "illuminate/filesystem": "^5.8||^6.0"
     },
     "require-dev": {
         "mockery/mockery": "^1.1",
         "orchestra/testbench": "^3.6",
-        "phpunit/phpunit": "^7.0"
+        "phpunit/phpunit": "^8.0"
     },
     "autoload": {
         "psr-4": {
-            "Themsaid\\MailPreview\\": "src"
-        },
-        "classmap": [
-            "tests"
-        ]
+            "Steve\\LaravelMailPreview\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Steve\\LaravelMailPreview\\Tests\\": "tests/"
+        }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Themsaid\\MailPreview\\MailPreviewServiceProvider"
-            ]
+                "Steve\\LaravelMailPreview\\MailPreviewServiceProvider"
+            ],
+            "aliases": {
+                "MailPreview": "Steve\\LaravelMailPreview\\MailPreview"
+            }
         }
     }
 }

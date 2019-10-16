@@ -1,9 +1,13 @@
 <?php
 
-abstract class TestCase extends Orchestra\Testbench\TestCase
+namespace Steve\LaravelMailPreview\Tests;
+
+use Orchestra\Testbench;
+
+abstract class TestCase extends Testbench\TestCase
 {
     protected function getPackageProviders($app)
     {
-        return ['Themsaid\MailPreview\MailPreviewServiceProvider'];
+        return ['Steve\LaravelMailPreview\MailPreviewServiceProvider'];
     }
 }

@@ -1,17 +1,12 @@
 <?php
 
-namespace Themsaid\MailPreview;
+namespace Steve\LaravelMailPreview\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Routing\Controller as BaseController;
 
 class MailPreviewController extends BaseController
 {
-    public function __construct()
-    {
-        $this->middleware(Authenticate::class);
-    }
-
     public function index()
     {
         $inbox = $this->inbox();
@@ -23,7 +18,7 @@ class MailPreviewController extends BaseController
             'path' => '404',
         ];
 
-        return view('mailpreview::show', ['inbox' => $inbox, 'email' => $email]);
+        return view('mailpreview::inbox', ['inbox' => $inbox, 'email' => $email]);
     }
 
     public function show($path)
@@ -35,7 +30,7 @@ class MailPreviewController extends BaseController
             return redirect(route('mailpreview'));
         }
 
-        return view('mailpreview::show', ['inbox' => $inbox, 'email' => $email]);
+        return view('mailpreview::inbox', ['inbox' => $inbox, 'email' => $email]);
     }
 
     public function download($path)
