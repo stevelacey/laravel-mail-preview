@@ -16,14 +16,14 @@
     ],
     "require": {
         "php": "^7.2",
-        "illuminate/support": "^5.8||^6.0",
-        "illuminate/mail": "^5.8||^6.0",
-        "illuminate/filesystem": "^5.8||^6.0"
+        "illuminate/support": "*",
+        "illuminate/mail": "*",
+        "illuminate/filesystem": "*"
     },
     "require-dev": {
         "mockery/mockery": "^1.1",
         "orchestra/testbench": "^3.6",
-        "phpunit/phpunit": "^8.0"
+        "phpunit/phpunit": "^8.5"
     },
     "autoload": {
         "psr-4": {
