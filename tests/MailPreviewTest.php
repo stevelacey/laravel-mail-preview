@@ -2,7 +2,10 @@
 
 namespace Steve\LaravelMailPreview\Tests;
 
+use Mockery;
+use ReflectionClass;
 use Steve\LaravelMailPreview\PreviewTransport;
+use Swift_Message;
 
 class MailPreviewTest extends TestCase
 {
