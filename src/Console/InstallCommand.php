@@ -3,13 +3,11 @@
 namespace Steve\LaravelMailPreview\Console;
 
 use Illuminate\Console\Command;
-use Illuminate\Console\DetectsApplicationNamespace;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Str;
 
 class InstallCommand extends Command
 {
-    use DetectsApplicationNamespace;
-
     /**
      * The name and signature of the console command.
      *
@@ -49,24 +47,24 @@ class InstallCommand extends Command
      */
     protected function registerMailPreviewServiceProvider()
     {
-        $namespace = Str::replaceLast('\\', '', $this->getAppNamespace());
+        $namespace = Str::replaceLast('\\', '', App::getNamespace());
 
-        $appConfig = file_get_contents(config_path('app.php'));
+        $appConfig = file_get_contents(App::configPath('app.php'));
 
         if (Str::contains($appConfig, $namespace.'\\Providers\\MailPreviewServiceProvider::class')) {
             return;
         }
 
-        file_put_contents(config_path('app.php'), str_replace(
+        file_put_contents(App::configPath('app.php'), str_replace(
             "{$namespace}\\Providers\EventServiceProvider::class,".PHP_EOL,
             "{$namespace}\\Providers\EventServiceProvider::class,".PHP_EOL."        {$namespace}\Providers\MailPreviewServiceProvider::class,".PHP_EOL,
             $appConfig
         ));
 
-        file_put_contents(app_path('Providers/MailPreviewServiceProvider.php'), str_replace(
+        file_put_contents(App::path('Providers/MailPreviewServiceProvider.php'), str_replace(
             "namespace App\Providers;",
             "namespace {$namespace}\Providers;",
-            file_get_contents(app_path('Providers/MailPreviewServiceProvider.php'))
+            file_get_contents(App::path('Providers/MailPreviewServiceProvider.php'))
         ));
     }
 }
